@@ -13,12 +13,15 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $category_name = ["Fruits", "Vegetables", "Dariry", "Choclate", "Biscuts", "Cosmatics", "Juice"];
+        $category_name = ["Fruits", "Vegetables", "Dairy", "Chocolate", "Biscuits", "Cosmetics", "Juice"];
 
         foreach ($category_name as $name)
         {
             Category::create([
-                "name" => $name
+                "name" => $name,
+                "image" => $name . ".png",
+                "slug" => strtolower($name),
+                "description" => $name
             ]);
         }
     }

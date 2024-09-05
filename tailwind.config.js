@@ -1,6 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
+const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -16,8 +17,24 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            textShadow: {
+                sm: '0 0 2px var(--tw-shadow-color)',
+                DEFAULT: '0 0 4px var(--tw-shadow-color)',
+                lg: '0 0 16px var(--tw-shadow-color)',
+            },
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [forms, typography,
+        plugin(function ({ matchUtilities, theme }) {
+          matchUtilities(
+          {
+              'text-shadow': (value) => ({
+                textShadow: value,
+            }),
+          },
+          { values: theme('textShadow') }
+          )
+      }),
+        ],
 };
