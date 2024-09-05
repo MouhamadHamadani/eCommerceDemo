@@ -17,22 +17,24 @@
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('products') }}" class="relative group" :active="request()->routeIs('products')">
-                        {{ __('Shop') }}
-                        <div class="absolute top-14 px-2 py-3 opacity-0 bg-white left-0 duration-300 group-hover:opacity-100 group-hover:top-16 border-b-2 border-green-800">
-                            <h2 class="">Categories</h2>
-                            <div>
+                    <div class="relative group inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500">
+                        <x-nav-link href="{{ route('products') }}" class="h-full" :active="request()->routeIs('products')">
+                            {{ __('Shop') }}
+                        </x-nav-link>
+                        <div class="absolute top-16 w-max px-3 py-3 opacity-0 hidden bg-white left-0 duration-300 group-hover:block group-hover:opacity-100 group-hover:top-16 border-b-2 border-green-800 z-10">
+                            <h2 class="font-black mb-5">Categories</h2>
+                            <div class="grid grid-cols-3 gap-x-5 gap-y-3">
                                 @forelse($categories as $category)
-                                <div>
-                                  <label>{{ $category->name }}</label>
-                                  <x-sub-category :category="$category" />
-                              </div>
-                              @empty
-                              <label>No Categories Found</label>
-                              @endif
-                          </div>
+                                <div class="">
+                                    <a href="{{ url("products?category=" . $category->slug) }}" class="font-black" wire:navigate>{{ $category->name }}</a>
+                                    <x-sub-category-link :category="$category" />
+                                </div>
+                                @empty
+                                <label>No Categories Found</label>
+                                @endif
+                            </div>
                         </div>
-                    </x-nav-link>
+                    </div>
                 </div>
             </div>
 

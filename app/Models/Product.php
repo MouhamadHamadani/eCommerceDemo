@@ -9,9 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'product_categories');
     }
 
     public function discounts()
@@ -27,6 +27,11 @@ class Product extends Model
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 
     public function getPriceAfterDiscountAttribute()

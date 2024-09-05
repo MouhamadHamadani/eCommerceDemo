@@ -11,7 +11,7 @@ class Category extends Model
 
     public function products()
     {
-        return $this->hasMany(Products::class);
+        return $this->belongsToMany(Product::class, 'product_categories');
     }
 
     public function discounts()
@@ -21,12 +21,12 @@ class Category extends Model
 
     public function subCategories()
     {
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
     public function getPriceAfterDiscountAttribute(Product $product)
