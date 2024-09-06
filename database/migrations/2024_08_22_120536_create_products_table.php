@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('sku')->unique();
             $table->text('description');
+            $table->string('mini_description', 255)->nullable();
             $table->decimal('price', 8, 2);
             $table->integer('quantity')->default(0);
             $table->timestamps();

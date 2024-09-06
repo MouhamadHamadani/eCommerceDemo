@@ -2,7 +2,7 @@
   <h2 class="text-2xl my-5 text-center">Products</h2>
   <div class="flex justify-center flex-wrap gap-5 p-5">
     @forelse($products as $product)
-    <a href="" class="w-1/4 relative group pb-3 hover:bg-gray-200  duration-300">
+    <a href="{{ route("product-details", $product->slug) }}" class="w-1/4 relative group pb-3 hover:bg-gray-200  duration-300" wire:navigate>
       <div>
         <div class="relative">
           <img src="{{ Storage::url("products/" . $product->images[0]->image) }}" class="w-full">
@@ -22,5 +22,8 @@
     @empty
     <label>No Products Found</label>
     @endif
+  </div>
+  <div class="flex justify-end mt-5 px-5">
+    {{ $products->links() }}
   </div>
 </div>

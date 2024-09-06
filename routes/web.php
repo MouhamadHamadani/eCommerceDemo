@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Home;
 use App\Livewire\Products;
+use App\Livewire\ProductDetails;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -22,3 +23,4 @@ Route::middleware([
  
 Route::get('/', Home::class)->name('home');
 Route::get('/products', Products::class)->name('products');
+Route::get('/product/{slug}', ProductDetails::class)->name('product-details');

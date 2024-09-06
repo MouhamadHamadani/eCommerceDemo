@@ -26,7 +26,7 @@
                             <div class="grid grid-cols-3 gap-x-5 gap-y-3">
                                 @forelse($categories as $category)
                                 <div class="">
-                                    <a href="{{ url("products?category=" . $category->slug) }}" class="font-black" wire:navigate>{{ $category->name }}</a>
+                                    <a href="{{ url("products?category=" . $category->slug) }}" class="font-bold" wire:navigate>{{ $category->name }}</a>
                                     <x-sub-category-link :category="$category" />
                                 </div>
                                 @empty

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Models\Category;
 
 class CategorySeeder extends Seeder
@@ -20,7 +21,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 "name" => $name,
                 "image" => $name . ".png",
-                "slug" => strtolower($name),
+                "slug" => Str::slug($name),
                 "description" => $name
             ]);
         }

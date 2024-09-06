@@ -3,31 +3,40 @@
 namespace App\Livewire;
 
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Category;
-use Livewire\Attributes\Url;
-
 
 class Products extends Component
 {
-    public $products;
+    use WithPagination;
 
+    // public $products;
     #[Url]
     public $category = '';
+
+    public $query = '';
+ 
+    public function search()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
         $category = $this->category;
-        if($category != null)
-        {
-            $categories = Category::where('slug', $category)->firstOrFail();
-            $this->products = $categories->products()->get();
+
+        // Check if the category exists and load products accordingly
+        if ($category != null) {
+            $categoryModel = Category::where('slug', $category)->firstOrFail();
+            $products = $categoryModel->products()->paginate(10);
+        } else {
+            $products = Product::paginate(10);
         }
-        else
-        {
-            $this->products = Product::all();
-        }
-        return view('livewire.products')->title('Products');
+
+        // Render the view and set the page title
+        return view('livewire.products', ["products" => $products])->title('Products');
     }
 }

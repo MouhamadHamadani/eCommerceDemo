@@ -31,8 +31,8 @@
   </div>
 
   <div class="mt-5 text-center">
-    <h2 class="text-2xl">Main Categories</h2>
-    <div class="flex justify-center flex-wrap my-5">
+    <h2 class="text-3xl font-bold mb-5">Main Categories</h2>
+    <div class="flex justify-center flex-wrap mts-5">
       @forelse($categories as $category)
       <a href="{{ url("products?category=" . $category->slug) }}" class="2xl:w-[20%] md:w-1/4 w-1/2" wire:navigate>
         <div class="relative group">

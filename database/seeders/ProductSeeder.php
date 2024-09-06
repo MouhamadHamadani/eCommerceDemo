@@ -4,9 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
+use Faker\Factory as Faker;
 
 class ProductSeeder extends Seeder
 {
@@ -15,6 +17,9 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        // Initialize Faker instance
+        $faker = Faker::create();
+
         $products = [
             ["name" => "Orange", "images" => 3, "category" => 1],
             ["name" => "Strawberries", "images" => 3, "category" => 1],
@@ -36,9 +41,10 @@ class ProductSeeder extends Seeder
         {
             $prod = Product::create([
                 "name" => $product["name"],
-                "slug" => strtolower($product["name"]),
-                "description" => $product["name"],
-                "price" => rand(2, 50),
+                "slug" => Str::slug($product["name"]),
+                'mini_description' => $faker->sentence(rand(6,15)),
+                'description' => $faker->paragraph(rand(3,100)),
+                'price' => $faker->randomFloat(2, 10, 100), // Price between 10 and 100
                 "quantity" => rand(2, 100),
             ]);
 
