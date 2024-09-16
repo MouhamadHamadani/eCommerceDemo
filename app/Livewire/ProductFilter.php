@@ -7,11 +7,40 @@ use App\Models\Category;
 
 class ProductFilter extends Component
 {
-    public $categories;
+  public $selectedCategories = [];
+  public $categories;
+  public $category;
+  public $price_min;
+  public $price_max;
 
-    public function render()
-    {
-        $this->categories = Category::all();
-        return view('livewire.product-filter');
-    }
+  protected $listeners = ['parameterUpdated'];
+
+  public function mount()
+  {
+    $this->selectedCategories = explode(",", $this->category);
+  }
+
+  public function render()
+  {
+    $this->categories = Category::all();
+    return view('livewire.product-filter');
+  }
+
+  public function updateCategories()
+  {
+    $this->dispatch('filterUpdated', $this->selectedCategories, $this->price_min, $this->price_max);
+  }
+
+  public function updatePrice()
+  {
+    $this->dispatch('filterUpdated', $this->selectedCategories, $this->price_min, $this->price_max);
+  }
+
+  public function resetFilters()
+  {
+    $this->selectedCategories = [];
+    $this->price_min = null;
+    $this->price_max = null;
+    $this->dispatch('filterUpdated', $this->selectedCategories, $this->price_min, $this->price_max);
+  }
 }
