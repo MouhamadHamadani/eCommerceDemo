@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
+use App\Models\DiscountProduct;
+use App\Models\Discount;
 use Faker\Factory as Faker;
 
 class ProductSeeder extends Seeder
@@ -46,6 +48,7 @@ class ProductSeeder extends Seeder
                 'description' => $faker->paragraph(rand(3,100)),
                 'price' => $faker->randomFloat(2, 10, 100), // Price between 10 and 100
                 "quantity" => rand(2, 100),
+                "created_at" => $faker->dateTimeBetween('-5 months')
             ]);
 
             if($product["images"] > 0)
@@ -70,6 +73,14 @@ class ProductSeeder extends Seeder
                 'product_id' => $prod->id,
                 'category_id' => $product["category"],
             ]);
+
+            if(rand(0,1 ))
+            {
+                DiscountProduct::create([
+                    'discount_id' => Discount::inRandomOrder()->first()->id,
+                    'product_id' => $prod->id
+                ]);
+            }
         }
     }
 }

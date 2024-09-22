@@ -32,8 +32,8 @@
       </svg>
     </h2>
     <div x-show="openPrice" class="grid grid-cols-2 w-full gap-2">
-      <x-input placeholder="Min" wire:model="price_min" wire:change="updatePrice"/>
-      <x-input placeholder="Max" wire:model="price_max" wire:change="updatePrice"/>
+      <x-input type="number" placeholder="Min" wire:model="price_min" wire:change="updatePrice"/>
+      <x-input type="number" placeholder="Max" wire:model="price_max" wire:change="updatePrice"/>
     </div>
   </div>
 

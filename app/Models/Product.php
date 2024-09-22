@@ -37,7 +37,7 @@ class Product extends Model
 
     public function discounts()
     {
-        return $this->belongsToMany(Discount::class);
+        return $this->belongsToMany(Discount::class, 'discount_products');
     }
 
     public function orderItems()
@@ -75,12 +75,36 @@ class Product extends Model
 
         if ($discount) {
             if ($discount->discount_percentage) {
-                return $this->price * (1 - $discount->discount_percentage / 100);
+                return number_format($this->price * (1 - $discount->discount_percentage / 100), 2);
             } elseif ($discount->discount_amount) {
-                return max(0, $this->price - $discount->discount_amount);
+                return number_format(max(0, $this->price - $discount->discount_amount), 2);
             }
         }
 
-        return $this->price;
+        return number_format($this->price, 2);
+    }
+
+    public function getDiscountAttribute()
+    {
+        $discount = $this->discounts()
+        ->where(function ($query) {
+            $query->whereNull('start_date')->orWhere('start_date', '<=', now());
+        })
+        ->where(function ($query) {
+            $query->whereNull('end_date')->orWhere('end_date', '>=', now());
+        })
+        ->orderByDesc('discount_percentage')
+        ->orderByDesc('discount_amount')
+        ->first();
+
+        if ($discount) {
+            if ($discount->discount_percentage) {
+                return $discount->discount_percentage . "%";
+            } elseif ($discount->discount_amount) {
+                return $discount->discount_amount . "$";
+            }
+        }
+
+        return 0;
     }
 }

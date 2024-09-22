@@ -18,23 +18,50 @@
         <div class="flex justify-end h-10 px-5 md:hidden">
           <button @click="openFilters = !openFilters"><i class="fa-solid fa-xmark"></i></button>
         </div>
-      <livewire:product-filter :category="$category" />
+      <livewire:product-filter :category="$category" :price_min="$price_min" :price_max="$price_max" />
     </div>
 
     {{-- Products Section --}}
     <div class="w-full min-h-screen lg:w-5/6 p-5">
-      {{-- Toggle Button - Visible only on Mobile --}}
-      <button @click="openFilters = !openFilters" class="bg-gray-500 text-white px-4 py-2 mx-5 rounded-md mb-4 block lg:hidden">
-        <span><i class="fa-solid fa-sliders"></i></span>
-      </button>
+      {{-- Sorting --}}
+      <div class="flex lg:justify-end justify-between mb-5">
+        {{-- Toggle Button - Visible only on Mobile --}}
+        <button @click="openFilters = !openFilters" class="bg-gray-500 text-white px-4 py-2 mx-5 rounded-md mb-4 block lg:hidden">
+          <span><i class="fa-solid fa-sliders"></i></span>
+        </button>
+        <label>
+          Sort By:
+          <select class="rounded-md border-gray-300 pe-10 py-1 bg-{{ __('right') }}" wire:model="sorting"
+          wire:change="changeSorting">
+            <option value="all">{{ __('None') }}</option>
+            <option value="price_low">{{ __('Price Low to High') }}</option>
+            <option value="price_high">{{ __('Price High to Low') }}</option>
+            <option value="a_z">{{ __('A to Z') }}</option>
+            <option value="z_a">{{ __('Z to A') }}</option>
+          </select>
+        </label>
+      </div>
       <div class="h-60 flex items-center justify-center hidden" wire:loading.class.remove="hidden">
         <i class="fa-solid fa-store fa-7x fa-beat text-green-700"></i>
       </div>
+      {{-- Sorting --}}
       <div class="flex justify-center flex-wrap gap-5" wire:loading.class="hidden">
         @forelse($products as $product)
         <a href="{{ route("product-details", $product->slug) }}" class="w-1/4 relative group pb-3 hover:bg-gray-200  duration-300" wire:navigate>
           <div>
             <div class="relative">
+              @if(!$product->created_at->lt(Carbon\Carbon::now()->subWeek()))
+              <span class="fa-layers fa-fw fa-beat fa-3x z-10 absolute top-1 right-1">
+                <i class="fa-solid fa-certificate text-red-400"></i>
+                <span class="fa-layers-text fa-inverse font-bold" data-fa-transform="shrink-11.5 rotate--30">NEW</span>
+              </span>
+              @endif
+              @if($product->price != $product->price_after_discount)
+              <span class="fa-layers fa-fw fa-3x z-10 absolute top-1 left-1">
+                <i class="fa-solid fa-tag text-green-400"></i>
+                <span class="fa-layers-text fa-inverse font-bold" data-fa-transform="shrink-11.5 rotate--30">%</span>
+              </span>
+              @endif
               <img src="{{ Storage::url("products/" . $product->images[0]->image) }}" class="w-full">
               @if($product->images->count() > 1)
               <img src="{{ Storage::url("products/" . $product->images[1]->image) }}" class="w-full absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300">
@@ -46,7 +73,13 @@
               <label>{{ $category->name }}</label>
               @endforeach
             </div>
-            <label class="block text-center">{{ $product->price }}$</label>
+            <label class="block text-center">
+            @if($product->price !== $product->price_after_discount)
+              <span class="line-through text-gray-500">{{ $product->price }}$</span> <span class="no-underline text-red-600">{{  $product->price_after_discount }}$</span>
+            @else
+              <span>{{ $product->price }}$</span>
+            @endif
+            </label>
           </div>
         </a>
         @empty
