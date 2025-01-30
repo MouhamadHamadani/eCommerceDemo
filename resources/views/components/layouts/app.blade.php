@@ -41,12 +41,12 @@
     @endif --}}
 
     <!-- Page Content -->
-    <main>
+    <main class="">
       {{ $slot }}
     </main>
   </div>
 
-  <footer class="bg-gray-800 text-white py-10">
+  <footer class="bg-gray-800 text-white py-10 sm:px-0 px-5">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
       <!-- About Section -->
       <div>

@@ -8,7 +8,7 @@
     {{-- Filters - Visible on Large Screens, Toggle on Mobile --}}
     <div 
         :class="{'-translate-x-full': !openFilters, 'translate-x-0': openFilters}" 
-        class="fixed top-0 left-0 w-2/3 lg:h-auto h-full lg:w-1/6 bg-white border-e-2 shadow-xl z-50 transition-transform duration-300 lg:static lg:translate-x-0"
+        class="fixed top-0 left-0 w-2/3 lg:h-auto h-full lg:w-1/6 bg-white border-e-2 shadow-xl z-10 transition-transform duration-300 lg:static lg:translate-x-0"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="transform -translate-x-full"
         x-transition:enter-end="transform translate-x-0"

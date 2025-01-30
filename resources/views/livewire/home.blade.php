@@ -34,10 +34,10 @@
     <h2 class="text-3xl font-bold mb-5">Main Categories</h2>
     <div class="flex justify-center flex-wrap mts-5">
       @forelse($categories as $category)
-      <a href="{{ url("products?category=" . $category->slug) }}" class="2xl:w-[20%] md:w-1/4 w-1/2" wire:navigate>
+      <a href="{{ url("products?category=" . $category->slug) }}" class="2xl:w-[20%] md:w-1/4 w-1/2 group" wire:navigate>
         <div class="relative group">
           <img src="{{ Storage::url("categories/" . $category->image) }}" class="w-full">
-          <label class="absolute right-4 md:top-1/2 top-1/3 w-1/2 text-3xl font-black text-white text-shadow-sm shadow-black text-end duration-300 group-hover:right-7">{{ $category->name }}</label>
+          <label class="absolute right-4 md:top-1/2 top-1/3 w-1/2 text-3xl font-black text-white group-hover:text-shadow-lg shadow-black text-end duration-300 group-hover:right-7">{{ $category->name }}</label>
         </div>
       </a>
       @empty
