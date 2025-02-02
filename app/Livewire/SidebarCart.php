@@ -49,7 +49,7 @@ class SidebarCart extends Component
         // Initialize quantity array
         foreach ($this->cartItems as $item) {
             $this->quantities[$item->id] = $item->quantity;
-            $this->totalPrice += $item->product->price * $item->quantity;
+            $this->totalPrice += $item->product->price_after_discount * $item->quantity;
         }
 
         //   dd($this->cartItems[0]->product->firstImage->image);

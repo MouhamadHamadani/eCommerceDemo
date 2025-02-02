@@ -60,6 +60,14 @@ class Product extends Model
         return $this->hasOne(ProductImage::class)->oldest(); // Get the first image
     }
 
+    public function secondImage()
+    {
+        return $this->hasOne(ProductImage::class)
+            ->whereNotIn('id', [$this->firstImage()?->id])
+            ->orderBy('created_at')
+            ->limit(1);
+    }
+
     public function reviews()
     {
         return $this->hasMany(Review::class);

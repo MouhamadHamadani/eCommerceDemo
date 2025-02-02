@@ -46,8 +46,8 @@ class ProductSeeder extends Seeder
                 "slug" => Str::slug($product["name"]),
                 'mini_description' => $faker->sentence(rand(6,15)),
                 'description' => $faker->paragraph(rand(3,100)),
-                'price' => $faker->randomFloat(2, 10, 100), // Price between 10 and 100
-                "quantity" => rand(2, 100),
+                'price' => $faker->randomFloat(2, 1, 50), // Price between 10 and 100
+                "quantity" => rand(0, 100),
                 "created_at" => $faker->dateTimeBetween('-5 months')
             ]);
 

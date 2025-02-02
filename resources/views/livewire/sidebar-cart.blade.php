@@ -29,14 +29,14 @@
               <div class="flex-1">
                 <h3 class="text-lg text-green-700 font-medium">{{ $item->product->name }}</h3>
                 <div class="flex text-gray-500">
-                  <p class="">${{ $item->product->price }} × </p>
+                  <p class="">${{ $item->product->price_after_discount }} × </p>
                   <input type="number" wire:model.defer="quantities.{{ $item->id }}"
                     wire:change="updateQuantity({{ $item->id }}, $event.target.value)"
                     class="w-16 p-0 px-0.5 border-0 border-b border-gray-200 focus:outline-0 focus:ring-0" min="1">
                   {{-- <!-- Quantity Input --> --}}
 
                 </div>
-                <p class="text-gray-500">Total: ${{ $item->product->price * $item->quantity }}</p>
+                <p class="text-gray-500">Total: ${{ $item->product->price_after_discount * $item->quantity }}</p>
               </div>
               <button wire:click="removeFromCart({{ $item->id }})" class="text-red-500 hover:text-red-700">
                 <i class="fa-regular fa-trash-can w-5 h-5"></i>
@@ -61,7 +61,9 @@
   <button @click="isOpen = true" class="">
     <span class="fa-layers fa-fw text-2xl">
       <i class="fa-solid fa-shopping-basket"></i>
+      @if(count($cartItems) > 0)
       <span class="fa-layers-counter text-3xl">{{ count($cartItems) }}</span>
+      @endif
     </span>
   </button>
 </div>

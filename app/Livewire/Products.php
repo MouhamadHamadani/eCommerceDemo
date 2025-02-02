@@ -32,7 +32,7 @@ class Products extends Component
     public $sorting = null;
 
     protected $listeners = ['filterUpdated'];
- 
+
     public function search()
     {
         $this->resetPage();
@@ -47,27 +47,22 @@ class Products extends Component
 
     public function getProducts()
     {
-        if($this->category != '')
-        {
+        if ($this->category != '') {
             $slug = explode(",", $this->category);
         }
 
         $products = Product::select('products.*');
 
         // Check if the category exists and load products accordingly
-        if (isset($slug)&& $slug != null) {
+        if (isset($slug) && $slug != null) {
             $categories = Category::whereIn('slug', $slug)->get();
 
-            if(count($categories) == 1)
-            {
+            if (count($categories) == 1) {
                 $this->name = $categories->first()->name;
                 $this->image_name = $this->name;
-            }
-            else
-            {
+            } else {
                 $this->name = '';
-                foreach ($categories as $key => $categoryName)
-                {
+                foreach ($categories as $key => $categoryName) {
                     $this->name .= $categoryName->name . (count($categories) - 1  > $key ? ", " : "");
                 }
             }
@@ -93,10 +88,14 @@ class Products extends Component
         $maxPrice = $this->price_max != 0 ? $this->price_max : 10000;
 
         $products = $products->leftJoin('discount_products', 'products.id', '=', 'discount_products.product_id')
-        ->leftJoin('discounts', 'discount_products.discount_id', '=', 'discounts.id')
-        ->whereRaw('(products.price - (products.price * IFNULL(discounts.discount_percentage, 0) / 100)) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+            ->leftJoin('discounts', 'discount_products.discount_id', '=', 'discounts.id')
+            ->whereRaw('(products.price - (products.price * IFNULL(discounts.discount_percentage, 0) / 100)) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
 
-        if ($this->sorting != null && $this->sorting != "all") {
+
+        // Default sorting: Newest products first if no filter is applied
+        if ($this->sorting == null || $this->sorting == "all") {
+            $products = $products->orderBy('products.created_at', 'DESC');
+        } else {
             $sorting = [
                 "price_low" => ["col" => "price", "value" => "ASC"],
                 "price_high" => ["col" => "price", "value" => "DESC"],
@@ -115,22 +114,17 @@ class Products extends Component
 
     public function filterUpdated($selectedCategories, $price_min, $price_max)
     {
-        if(count($selectedCategories))
-        {
+        if (count($selectedCategories)) {
             $this->category = '';
-            for ($i=0; $i < count($selectedCategories) - 1; $i++)
-            { 
+            for ($i = 0; $i < count($selectedCategories) - 1; $i++) {
                 $this->category .= $selectedCategories[$i] . ',';
             }
             $this->category .= $selectedCategories[count($selectedCategories) - 1];
 
-            if(count($selectedCategories)> 1)
-            {
+            if (count($selectedCategories) > 1) {
                 $this->image_name = 'shop';
             }
-        }
-        else
-        {
+        } else {
             $this->name = 'shop';
             $this->image_name = 'shop';
             $this->category = '';

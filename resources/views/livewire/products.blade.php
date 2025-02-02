@@ -47,8 +47,8 @@
       {{-- Sorting --}}
       <div class="flex justify-center flex-wrap gap-5" wire:loading.class="hidden">
         @forelse($products as $product)
-        <a href="{{ route("product-details", $product->slug) }}" class="w-1/4 relative group pb-3 hover:bg-gray-200  duration-300" wire:navigate>
-          <div>
+        <a href="{{ route("product-details", $product->slug) }}" class="w-1/4 relative group hover:bg-gray-200  duration-300" wire:navigate>  
+          <div class="border hover:border-green-500 p-2 hover:p-1 duration-300 rounded shadow">
             <div class="relative">
               @if(!$product->created_at->lt(Carbon\Carbon::now()->subWeek()))
               <span class="fa-layers fa-fw fa-beat fa-3x z-10 absolute top-1 right-1">
@@ -56,26 +56,31 @@
                 <span class="fa-layers-text fa-inverse font-bold" data-fa-transform="shrink-11.5 rotate--30">NEW</span>
               </span>
               @endif
+              @if($product->quantity <= 0)
+              <div class="absolute bottom-0 w-full bg-red-500 text-center text-white z-10 font-bold py-1">
+                Out Of Stock
+              </div>
+              @endif
               @if($product->price != $product->price_after_discount)
               <span class="fa-layers fa-fw fa-3x z-10 absolute top-1 left-1">
                 <i class="fa-solid fa-tag text-green-400"></i>
                 <span class="fa-layers-text fa-inverse font-bold" data-fa-transform="shrink-11.5 rotate--30">%</span>
               </span>
               @endif
-              <img src="{{ Storage::url("products/" . $product->images[0]->image) }}" class="w-full">
+              <img src="{{ Storage::url("products/" . $product->firstImage->image) }}" class="w-full object-cover">
               @if($product->images->count() > 1)
-              <img src="{{ Storage::url("products/" . $product->images[1]->image) }}" class="w-full absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300">
+              <img src="{{ Storage::url("products/" . $product->images[1]->image) }}" class="w-full object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300">
               @endif
             </div>
             <h1 class="text-center mt-2">{{ $product->name }}</h1>
-            <div class="text-center">
+            <div class="text-center flex flex-wrap justify-center gap-2 text-green-600">
               @foreach($product->categories as $category)
-              <label>{{ $category->name }}</label>
+              <label class="text-sm">{{ $category->name }}</label>
               @endforeach
             </div>
             <label class="block text-center">
             @if($product->price !== $product->price_after_discount)
-              <span class="line-through text-gray-500">{{ $product->price }}$</span> <span class="no-underline text-red-600">{{  $product->price_after_discount }}$</span>
+              <span class="line-through text-gray-500">{{ $product->price }}$</span> <span class="no-underline text-red-600">{{  $product->price_after_discount != 0 ? $product->price_after_discount . "$" : "Free" }}</span>
             @else
               <span>{{ $product->price }}$</span>
             @endif

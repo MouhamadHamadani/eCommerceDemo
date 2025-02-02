@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('discount_amount', 8, 2)->nullable();
             $table->integer('discount_percentage')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
             $table->timestamps();
         });
     }

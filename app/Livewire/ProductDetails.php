@@ -8,6 +8,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
@@ -35,13 +36,30 @@ class ProductDetails extends Component
 
   private function calculateTotal()
   {
-    $discountedPrice = $this->product->discount_price ?? $this->product->price;
+    $discountedPrice = $this->product->price_after_discount ?? $this->product->price;
+    // dd($discountedPrice);
     $this->totalPrice = $this->quantity * $discountedPrice;
   }
 
   public function render()
   {
-    $this->product = Product::where("slug", $this->slug)->first();
+    // $this->product = Product::where("slug", $this->slug)->first();
+    $today = Carbon::now();
+
+    $this->product = Product::select(
+      'products.*',
+      'discounts.end_date as discount_end_date',
+      'discounts.discount_percentage'
+    )
+      ->leftJoin('discount_products', 'products.id', '=', 'discount_products.product_id')
+      ->leftJoin('discounts', function ($join) use ($today) {
+        $join->on('discount_products.discount_id', '=', 'discounts.id')
+          ->where('discounts.start_date', '<=', $today)
+          ->where('discounts.end_date', '>=', $today);
+      })
+      ->where('products.slug', $this->slug)
+      ->first();
+
     $this->calculateTotal();
 
     if ($this->product == "")

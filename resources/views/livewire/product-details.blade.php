@@ -35,14 +35,17 @@
       <h1 class="text-2xl font-bold text-yellow-700">
         @if ($product->price !== $product->price_after_discount)
           <span class="line-through text-gray-500">{{ $product->price }}$</span> <span
-            class="no-underline text-red-600">{{ $product->price_after_discount }}$</span>
+            class="no-underline text-red-600">{{ $product->price_after_discount != 0 ? $product->price_after_discount . "$" : "Free" }}</span>
           <label class="block">Discount: {{ $product->discount }}</label>
+          <span class="countdown font-semibold text-black mt-1"
+            data-end="{{ \Carbon\Carbon::parse($product->discount_end_date)->format('Y-m-d H:i:s') }}"></span>
         @else
           <span>{{ $product->price }}$</span>
         @endif
       </h1>
       <p class="mt-5">{{ $product->mini_description }}</p>
 
+      @if($product->quantity > 0)
       <div class="flex flex-wrap items-center gap-3 mt-7">
         <input type="number" name="quantity" id="quantity" class="rounded-full bg-transparent w-24 ps-4"
           wire:model.lazy="quantity">
@@ -50,6 +53,7 @@
           wire:click="addToCart({{ $product->id }})">Add To Cart</button>
         <h3>Total: ${{ number_format($totalPrice, 2) }}</h3>
       </div>
+      @endif
 
       <div>
       </div>
@@ -100,5 +104,37 @@
         $("#preview-img").attr("src", src);
       }
     });
+  </script>
+
+  <!-- Countdown Timer Script -->
+  <script>
+    function updateCountdown() {
+      document.querySelectorAll('.countdown').forEach(function(element) {
+        let endDate = new Date(element.getAttribute('data-end')).getTime();
+        let now = new Date().getTime();
+        let timeLeft = endDate - now;
+
+        if (timeLeft > 0) {
+          let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+          // Ensure all values have two digits (e.g., 01, 09, etc.)
+          let formattedDays = String(days).padStart(2, '0');
+          let formattedHours = String(hours).padStart(2, '0');
+          let formattedMinutes = String(minutes).padStart(2, '0');
+          let formattedSeconds = String(seconds).padStart(2, '0');
+
+          element.innerHTML =
+            `${formattedDays} days <span class="bg-green-400 rounded text-white px-1">${formattedHours}</span>:<span class="bg-green-400 rounded text-white px-1">${formattedMinutes}</span>:<span class="bg-green-400 rounded text-white px-1">${formattedSeconds}</span>`;
+        } else {
+          element.innerHTML = "Expired";
+        }
+      });
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // Run immediately on page load
   </script>
 @endpush
