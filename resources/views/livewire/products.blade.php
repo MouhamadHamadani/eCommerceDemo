@@ -8,7 +8,7 @@
     {{-- Filters - Visible on Large Screens, Toggle on Mobile --}}
     <div 
         :class="{'-translate-x-full': !openFilters, 'translate-x-0': openFilters}" 
-        class="fixed top-0 left-0 w-2/3 lg:h-auto h-full lg:w-1/6 bg-white border-e-2 shadow-xl z-10 transition-transform duration-300 lg:static lg:translate-x-0"
+        class="fixed top-0 left-0 w-2/3 lg:h-auto h-full lg:w-1/6 bg-white border-e-2 shadow-xl z-20 transition-transform duration-300 lg:static lg:translate-x-0"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="transform -translate-x-full"
         x-transition:enter-end="transform translate-x-0"
@@ -47,7 +47,7 @@
       {{-- Sorting --}}
       <div class="flex justify-center flex-wrap gap-5" wire:loading.class="hidden">
         @forelse($products as $product)
-        <a href="{{ route("product-details", $product->slug) }}" class="w-1/4 relative group hover:bg-gray-200  duration-300" wire:navigate>  
+        <a href="{{ route("product-details", $product->slug) }}" class="sm:w-1/4 w-3/4 relative group hover:bg-gray-200  duration-300" wire:navigate>  
           <div class="border hover:border-green-500 p-2 hover:p-1 duration-300 rounded shadow">
             <div class="relative">
               @if(!$product->created_at->lt(Carbon\Carbon::now()->subWeek()))

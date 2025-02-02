@@ -20,6 +20,7 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <link rel="stylesheet" type="text/css" href="{{ asset("css/all.css") }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset("css/main.css") }}">
   @stack('style')
 
   <!-- Styles -->

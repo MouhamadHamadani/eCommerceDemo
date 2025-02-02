@@ -14,10 +14,10 @@
         </span>
       </h1>
 
-      <div class="flex justify-center gap-5">
+      <div class="flex flex-wrap justify-center gap-5 sm:mx-10">
         @foreach ($products as $product)
           <a href="{{ route('product-details', $product->slug) }}"
-            class="w-1/4 relative group hover:bg-gray-200  duration-300" wire:navigate>
+            class="sm:w-1/4 w-3/4 relative group hover:bg-gray-200  duration-300" wire:navigate>
             <div class="border p-2 hover:p-1 duration-300 rounded shadow">
               <img src="{{ Storage::url('products/' . $product->firstImage->image) }}" alt="{{ $product->name }}"
                 class="w-full object-cover rounded">

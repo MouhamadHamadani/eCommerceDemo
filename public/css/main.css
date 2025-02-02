@@ -1,0 +1,28 @@
+/* For Firefox */
+* {
+  /* scrollbar-width: thin;
+  scrollbar-color: #074607 #f1f1f1; */
+}
+
+
+/* Width and Height */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Background of the track */
+::-webkit-scrollbar-track {
+  background: rgba(247, 244, 244); 
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background: #0f4e0f; 
+  border-radius: 5px;
+}
+
+/* Scrollbar handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #033306; 
+}
