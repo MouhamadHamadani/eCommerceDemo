@@ -17,7 +17,7 @@ class ProductFilter extends Component
 
   public function mount()
   {
-    $this->selectedCategories = explode(",", $this->category);
+    $this->selectedCategories = $this->category != "" ? explode(",", $this->category) : [];
   }
 
   public function render()

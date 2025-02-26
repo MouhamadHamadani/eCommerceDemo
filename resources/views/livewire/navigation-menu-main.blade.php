@@ -202,6 +202,28 @@
       <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
         {{ __('Home') }}
       </x-responsive-nav-link>
+      <div x-data="{ open: false }">
+        <x-responsive-nav-link href="{{ route('products') }}" :active="request()->routeIs('products')">
+          {{ __('Shop') }}
+        </x-responsive-nav-link>
+
+        <button @click="open = !open" class="w-full ps-3 pe-4 py-2 border-l-4 border-transparent flex justify-between items-center text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50">
+          Browse Categories
+          <span x-text="open ? '▲' : '▼'"></span>
+        </button>
+
+        <div x-show="open" class="pl-4 border-l border-gray-300">
+          @foreach ($categories->take(5) as $category)
+            <!-- Show only top 5 -->
+            <a href="{{ route('products', ['category' => $category->slug]) }}" class="block px-4 py-2 text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50">
+              {{ $category->name }}
+            </a>
+          @endforeach
+          <a href="{{ route('products') }}?openFilter=true" class="block px-4 py-2 text-green-600 font-bold">
+            View All Categories →
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- Responsive Settings Options -->

@@ -3,7 +3,7 @@
     <h2 class="text-4xl text-center text-white font-bold text-shadow-lg shadow-black capitalize">{{ $name }}</h2>
   </div>
 
-  <div x-data="{ openFilters: false }" class="flex">
+  <div x-data="{ openFilters: {{ $openFilter == true ? 'true' : 'false' }} }" class="flex">
 
     {{-- Filters - Visible on Large Screens, Toggle on Mobile --}}
     <div 
@@ -45,10 +45,10 @@
         <i class="fa-solid fa-store fa-7x fa-beat text-green-700"></i>
       </div>
       {{-- Sorting --}}
-      <div class="flex justify-center flex-wrap gap-5" wire:loading.class="hidden">
+      <div class="flex justify-center flex-wrap" wire:loading.class="hidden">
         @forelse($products as $product)
-        <a href="{{ route("product-details", $product->slug) }}" class="sm:w-1/4 w-3/4 relative group hover:bg-gray-200  duration-300" wire:navigate>  
-          <div class="border hover:border-green-500 p-2 hover:p-1 duration-300 rounded shadow">
+        <a href="{{ route("product-details", $product->slug) }}" class="lg:w-1/4 sm:w-1/3 w-1/2 p-2 relative" wire:navigate>  
+          <div class="border hover:border-green-500 p-2 hover:p-1 duration-300 rounded shadow group hover:bg-gray-200">
             <div class="relative">
               @if(!$product->created_at->lt(Carbon\Carbon::now()->subWeek()))
               <span class="fa-layers fa-fw fa-beat fa-3x z-10 absolute top-1 right-1">

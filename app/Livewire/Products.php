@@ -16,12 +16,14 @@ class Products extends Component
     // public $products;
     #[Url(except: '')]
     public $category = '';
-
+    
     // Filter
     #[Url(except: null)]
     public $price_min;
     #[Url(except: null)]
     public $price_max;
+    #[Url]
+    public $openFilter = false;
 
     public $name = 'shop';
     public $image_name = 'shop';

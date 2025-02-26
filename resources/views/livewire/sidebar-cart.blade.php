@@ -20,7 +20,7 @@
         </div>
 
         <div class="space-y-4">
-          @foreach ($cartItems as $item)
+          @foreach ($cartItems->take(2) as $item)
             <div class="flex justify-between items-center gap-2 p-2 border-b border-gray-200 ">
               <div>
                 <img src="{{ Storage::url('products/' . $item->product->firstImage->image) }}" alt=""
@@ -32,7 +32,8 @@
                   <p class="">${{ $item->product->price_after_discount }} × </p>
                   <input type="number" wire:model.defer="quantities.{{ $item->id }}"
                     wire:change="updateQuantity({{ $item->id }}, $event.target.value)"
-                    class="w-16 p-0 px-0.5 border-0 border-b border-gray-200 focus:outline-0 focus:ring-0" min="1">
+                    class="w-16 p-0 px-0.5 border-0 border-b border-gray-200 focus:outline-0 focus:ring-0"
+                    min="1">
                   {{-- <!-- Quantity Input --> --}}
 
                 </div>
@@ -44,9 +45,16 @@
             </div>
           @endforeach
 
+          @if (count($cartItems) > 2)
+            <a href="{{ route('cart') }}" class="block text-center mt-3 p-2 bg-green-600 text-white rounded" wire:navigate>
+              View Full Cart
+            </a>
+          @endif
+
           <!-- Cart Total Price -->
           <div class="mt-4 p-2 border-t">
-              <h2 class="text-lg font-bold flex justify-between">Total Price: <span>${{ number_format($totalPrice, 2) }}</span></h2>
+            <h2 class="text-lg font-bold flex justify-between">Total Price:
+              <span>${{ number_format($totalPrice, 2) }}</span></h2>
           </div>
         </div>
 
@@ -61,8 +69,8 @@
   <button @click="isOpen = true" class="">
     <span class="fa-layers fa-fw text-2xl">
       <i class="fa-solid fa-shopping-basket"></i>
-      @if(count($cartItems) > 0)
-      <span class="fa-layers-counter text-3xl">{{ count($cartItems) }}</span>
+      @if (count($cartItems) > 0)
+        <span class="fa-layers-counter text-3xl">{{ count($cartItems) }}</span>
       @endif
     </span>
   </button>
